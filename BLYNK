@@ -1,0 +1,42 @@
+#define BLYNK_TEMPLATE_ID "TMPL3U993CnMb"
+#define BLYNK_TEMPLATE_NAME "LION"
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>  
+#include <BlynkSimpleEsp8266.h>
+
+
+int pinValue;
+
+char auth[] = "SRFPg22PfBYtuOcbPSqYF3N385pPuI0T";            
+char ssid[] = "project1";        
+char pass[] = "12345678";  
+
+#include <dht11.h>
+#define DHT11PIN D2
+dht11 DHT11;
+#define SOIL_MOISTURE_PIN A0
+#define DHT_PIN D2
+#define RELAY_PIN D3
+
+
+WiFiClient client;
+
+
+void setup() {
+  Serial.begin(9600);
+
+   Blynk.begin(auth, ssid, pass);  
+void loop() {
+  Blynk.run();
+
+int chk = DHT11.read(DHT11PIN);
+  int soilMoisture = analogRead(SOIL_MOISTURE_PIN);
+  float temperature = DHT11.temperature;
+  float humidity = DHT11.humidity;
+
+  Blynk.virtualWrite(V1, soilMoisture); 
+  Blynk.virtualWrite(V2, temperature);   
+  Blynk.virtualWrite(V3, humidity);      
+
+  delay(1000);  
+}
